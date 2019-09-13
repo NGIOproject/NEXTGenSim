@@ -1,0 +1,48 @@
+Copyright 2015-2019 NEXTGenIO Project [EC H2020 Project ID: 671951] (www.nextgenio.eu)
+
+This file is part of NEXTGenSim.
+
+NEXTGenSim is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+NEXTGenSim is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with NEXTGenSim.  If not, see <https://www.gnu.org/licenses/>.
+
+
+
+Nick's New Trace Format Specification
+
+NNTF declaration line - required
+Header Line - optional but strongly encouraged
+JobID - starts from 1 in the file
+WorkflowID - 0 for no workflow, integer for a workflowID
+PreceedingJobs - 0 for no preceeding jobs, integer JobID's otherwise, always contained in a []
+Workflow Status - 0 for no workflow, 1 for begin, 2 for continue, 3 for end
+User - string 
+Number of Nodes required - int
+IO fraction - float - 0 < X < 1
+Arrival time - integer t >= 0
+Wait time - integer t >= 0
+Run time - integer t >= 0
+Requested time - integer t >= 0, t >= run time
+
+Everything with a # as first char is ignored
+JobID, WorkflowID - internally will be renumbered so no need to be monotonic or continuous, just unique
+
+
+Example File
+
+#NNTF - Trace came from an ARCHER log on stardate 201985634
+# JobID, WorkflowID, PreceedingJobs, Workflow Status, User, Number of Nodes required, IO fraction, Arrival time, Wait time, Run time
+1, 0, [0], 0, nickaj, 20, 0.2, 0, 10, 30, 60
+2, 1, [0], 1, cptawesome, 20, 0.2, 0, 10, 30, 60
+3, 1, [2], 2, cptawesome, 20, 0.2, 0, 10, 30, 60
+4, 1, [2], 2, cptawesome, 20, 0.2, 0, 10, 30, 60
+5, 1, [3,4], 3, cptawesome, 20, 0.2, 0, 10, 30, 60
